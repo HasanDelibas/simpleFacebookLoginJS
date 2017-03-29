@@ -1,0 +1,76 @@
+
+<div id="fb-root"></div>
+
+<button onclick="javascript:login();">Login Facebook</button>
+
+<br>
+
+<button onclick="javascript:logout();">Logout from Facebook</button>
+
+
+
+<script type="text/javascript" src="//connect.facebook.net/tr_TR/sdk.js"></script>
+<!-- this link is must be   -->
+
+
+<script>
+
+
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId: 'XXXXXXXXXXX',
+            status: true,
+            cookie: true,
+            xfbml: true,
+            version    : 'v2.8'
+        });
+    };
+
+    var res;
+    // Load the SDK asynchronously
+    (function(d){
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+
+    
+    function login() {
+
+        FB.login(function(response) {
+            if (response.authResponse) {
+                console.log('Welcome!  Fetching your information.... ');
+                FB.api('/me',
+                       {fields: "id,birthday,email,first_name,gender,middle_name,name,timezone"},
+                       function(response) {
+                       /* In this location you can post 
+                       *  sign.php to response datas.
+                       *
+                       * example response.name
+                       * response.birthday
+                       * response.email
+                       * 
+                       */
+                       
+                    res = response;
+                    console.log(response);
+                });
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, {scope: 'email,user_birthday'});
+    }
+
+    function logout() {
+        FB.logout(function(response) {
+            // user is now logged out
+        });
+    }
+
+    var status = FB.getLoginStatus();
+
+    console.log(status);
+
+</script>
